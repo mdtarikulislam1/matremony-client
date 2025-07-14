@@ -1,37 +1,11 @@
 import { use, useState } from "react";
-import {  useNavigate } from "react-router";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
-import { MdLogout } from "react-icons/md";
 import { NavLink } from "react-router";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logOut } = use(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logOut()
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Logged out successfully!",
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-        });
-        navigate("/signin");
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Logout failed!",
-          text: error.message,
-        });
-      });
-  };
-
+  const { user, } = use(AuthContext);
+ console.log(user)
+  
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,16 +29,10 @@ const Navbar = () => {
               Home
             </NavLink>
             <NavLink
-              to="/biodatas"
+              to="/matremony/allData"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               Biodatas
-            </NavLink>
-            <NavLink
-              to="/about"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              About Us
             </NavLink>
             <NavLink
               to="/contact"
@@ -74,20 +42,19 @@ const Navbar = () => {
             </NavLink>
             {user ? (
               <>
-                <NavLink
+               <div className="flex gap-3 items-center">
+                 <NavLink
                   to="/dashboard"
                   className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Dashboard
                 </NavLink>
-               <div onClick={handleLogout} className="hover:bg-gray-200 text-black px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
-                 <button
-                  
-                >
-                  Logout
-                </button>
-                <MdLogout />
+                <div className="flex gap-2 items-center">
+                  <p className="font-semibold text-xl">{user?.displayName}</p>
+                  <img className="w-12 h-12 rounded-full" src={user?.photoURL} alt={user?.displayName} />
+                </div>
                </div>
+              
               </>
             ) : (
               <NavLink
@@ -143,7 +110,7 @@ const Navbar = () => {
             Home
           </NavLink>
           <NavLink
-            to="/biodatas"
+            to="/matremony/allData"
             className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
           >
             Biodatas
@@ -168,12 +135,6 @@ const Navbar = () => {
               >
                 Dashboard
               </NavLink>
-              <button
-                onClick={handleLogout}
-                className="block w-full bg-red-500 text-white px-3 py-2 rounded-md text-base font-medium hover:bg-red-600 text-center"
-              >
-                Logout
-              </button>
             </>
           ) : (
             <NavLink
