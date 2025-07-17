@@ -7,7 +7,8 @@ import BiodataForm from "../Pages/FormBiodata/BioDataForm";
 import Biodatas from "../Pages/Biodatas/Biodatas";
 import Details from "../Pages/Biodatas/Details";
 import PrivateRoute from "../Routes/PrivateRoute";
-import NormalDashBoard from "../Pages/Dashboard/NormalDashBoard";
+// import NormalDashBoard from "../Pages/Dashboard/NormalDashBoard";
+import DashBoardLayouts from "../Layouts/DashBoardLayouts";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -41,9 +42,8 @@ export const router = createBrowserRouter([
       },
       {
         path:'/dashboard',
-        element:<PrivateRoute>
-          <NormalDashBoard></NormalDashBoard>
-        </PrivateRoute>
+        element:<DashBoardLayouts></DashBoardLayouts>,
+      
       }
   
     ]

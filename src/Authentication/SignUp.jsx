@@ -1,39 +1,90 @@
-import React, { use } from 'react';
+import React, { useState, use } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router'; 
 import { updateProfile } from 'firebase/auth';
 import { AuthContext } from '../Context/AuthContext';
+import { saveUserDb } from '../Pages/Shared/role';
+import Swal from 'sweetalert2';
 
 export default function SignUp() {
-  const { createUser, signInWithGoogle } = use(AuthContext)
+  const { createUser, signInWithGoogle } = use(AuthContext); 
   const { register, formState: { errors }, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => {
-        console.log(error);
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithGoogle();
+      const userData = {
+        name: result?.user?.displayName,
+        image: result?.user?.photoURL,
+        email: result?.user?.email,
+      };
+
+      const res = await saveUserDb(userData); 
+      console.log("Saved User:", res);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Signed in with Google.",
+        icon: "success",
+        confirmButtonColor: "#4f46e5",
+      }).then(() => {
+        navigate("/dashboard");
       });
+    } catch (error) {
+      console.error("Google SignIn error:", error);
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonColor: "#e11d48",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const submit = (data) => {
-    createUser(data.email, data.password)
-      .then(result => {
-        const user = result.user;
-        updateProfile(user, {
-          displayName: data.name,
-          photoURL: data.image,
-        }).then(() => {
-          console.log('Profile updated');
-        }).catch(error => {
-          console.error('Profile update error:', error);
-        });
-      })
-      .catch(error => {
-        console.error(error);
+  const submit = async (data) => {
+    setLoading(true);
+    try {
+      const result = await createUser(data.email, data.password);
+      const user = result.user;
+
+      await updateProfile(user, {
+        displayName: data.name,
+        photoURL: data.image,
       });
+      console.log("Profile updated");
+
+      const userData = {
+        name: data.name,
+        image: data.image,
+        email: data.email,
+      };
+      const res = await saveUserDb(userData); 
+      console.log("Saved User:", res);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Account created successfully.",
+        icon: "success",
+        confirmButtonColor: "#4f46e5",
+      }).then(() => {
+        navigate("/dashboard");
+      });
+    } catch (error) {
+      console.error("Signup error:", error);
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonColor: "#e11d48",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,7 +130,12 @@ export default function SignUp() {
           {errors.password?.type === 'minLength' && <p className='text-red-500'>Password must be at least 6 characters</p>}
 
           <div><a className="link link-hover">Forgot password?</a></div>
-          <button className="btn btn-neutral mt-4">Register now</button>
+          <button
+            disabled={loading} // ✅ loading disable
+            className={`btn btn-neutral mt-4 ${loading && 'opacity-50 cursor-not-allowed'}`}
+          >
+            {loading ? "Processing..." : "Register now"}
+          </button>
         </fieldset>
         <p>
           <small>Already have an account? <Link to='/signin' className='btn btn-link'>Login</Link></small>
@@ -87,12 +143,13 @@ export default function SignUp() {
         <button
           type="button"
           onClick={handleGoogleSignIn}
+          disabled={loading} // ✅ loading disable
           className="btn w-full bg-white text-black border-[#e5e5e5]"
         >
           <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
             <path fill="#4285f4" d="M496 208H272v96h129c-11 55-60 96-129 96-74 0-134-60-134-134s60-134 134-134c34 0 65 13 88 34l68-68C400 70 342 48 272 48 121 48 0 169 0 320s121 272 272 272c136 0 248-112 248-248 0-16-2-32-6-48z"/>
           </svg>
-          Login with Google
+          {loading ? "Please wait..." : "Login with Google"}
         </button>
       </form>
     </div>

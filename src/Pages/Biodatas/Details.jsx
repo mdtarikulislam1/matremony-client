@@ -80,7 +80,7 @@ export default function Details() {
 
     <div className="mt-6 flex justify-end">
       <button className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-5 rounded-lg shadow-md transition-all">
-        Contact
+      Add Favorite
       </button>
     </div>
   </div>

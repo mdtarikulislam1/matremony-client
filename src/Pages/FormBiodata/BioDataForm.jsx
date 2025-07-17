@@ -89,9 +89,10 @@ const BiodataForm = () => {
         Create Your Biodata
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* Biodata Type */}
-        <div>
+      <div  className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
           <label className="block font-medium mb-1">
             Biodata Type <span className="text-red-500">*</span>
           </label>
@@ -390,11 +391,12 @@ const BiodataForm = () => {
             <p className="text-red-500 text-sm mt-1">This field is required</p>
           )}
         </div>
+      </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-colors duration-300"
+          className="w-full my-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-colors duration-300"
         >
           Submit Biodata
         </button>

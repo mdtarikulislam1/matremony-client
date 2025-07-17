@@ -1,12 +1,14 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router"; // <-- FIXED
+import Swal from "sweetalert2";
+import { saveUserDb } from "../Pages/Shared/role";
 import { AuthContext } from "../Context/AuthContext";
-import { Link } from "react-router";
-import Swal from "sweetalert2"; // Import SweetAlert2
 
 export default function SignIn() {
-  const { signInWithGoogle, signInWithEmail } = use(AuthContext);
-  // const navigate = useNavigate();
+  const { signInWithGoogle, SignInUser } = use(AuthContext); // <-- FIXED
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -14,61 +16,69 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    // Email/Password Sign In
-    signInWithEmail(data.email, data.password)
-      .then((result) => {
+  const onSubmit = async (data) => {
+   setLoading(true)
+  
+    try {
+      const result = await SignInUser(data.email, data.password);
+      console.log(result);
 
-        // Success Alert
-        Swal.fire({
-          title: "Success!",
-          text: "You have successfully signed in.",
-          icon: "success",
-          confirmButtonColor: "#4f46e5",})
-          // .then(() => {
-        //   navigate("/dashboard"); // Redirect after alert
-        // });
-      })
-      .catch((error) => {
-        console.error("Login error:", error);
-
-        // Error Alert
-        Swal.fire({
-          title: "Error!",
-          text: error.message,
-          icon: "error",
-          confirmButtonColor: "#e11d48",
-        });
+      const userData = {
+        name: result?.user?.displayName,
+        image: result?.user?.photoURL,
+        email: result?.user?.email,
+      };
+      await saveUserDb(userData);
+      Swal.fire({
+        title: "Success!",
+        text: "You have successfully signed in.",
+        icon: "success",
+        confirmButtonColor: "#4f46e5",
+      }).then(() => {
+        navigate("/dashboard");
       });
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonColor: "#e11d48",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then((result) => {
-        console.log("Google SignIn:", result.user);
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithGoogle();
+      const userData = {
+        name: result?.user?.displayName,
+        image: result?.user?.photoURL,
+        email: result?.user?.email,
+      };
+      await saveUserDb(userData);
 
-        // Success Alert
-        Swal.fire({
-          title: "Success!",
-          text: "Signed in with Google.",
-          icon: "success",
-          confirmButtonColor: "#4f46e5",
-        })
-        // .then(() => {
-        //   navigate("/dashboard"); // Redirect after alert
-        // });
-      })
-      .catch((error) => {
-        console.error("Google SignIn error:", error);
-
-        // Error Alert
-        Swal.fire({
-          title: "Error!",
-          text: error.message,
-          icon: "error",
-          confirmButtonColor: "#e11d48",
-        });
+      Swal.fire({
+        title: "Success!",
+        text: "Signed in with Google.",
+        icon: "success",
+        confirmButtonColor: "#4f46e5",
+      }).then(() => {
+        navigate("/dashboard");
       });
+    } catch (error) {
+      console.error("Google SignIn error:", error);
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonColor: "#e11d48",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -113,18 +123,28 @@ export default function SignIn() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+            disabled={loading}
+            className={`w-full text-white py-2 px-4 rounded-md transition ${
+              loading
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
 
           {/* Google Sign-In Button */}
           <button
             type="button"
+            disabled={loading}
             onClick={handleGoogleSignIn}
-            className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition"
+            className={`w-full text-white py-2 px-4 rounded-md transition ${
+              loading
+                ? "bg-red-400 cursor-not-allowed"
+                : "bg-red-600 hover:bg-red-700"
+            }`}
           >
-            Sign in with Google
+            {loading ? "Signing in..." : "Sign in with Google"}
           </button>
         </form>
 

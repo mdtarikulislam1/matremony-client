@@ -4,8 +4,7 @@ import { NavLink } from "react-router";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, } = use(AuthContext);
- console.log(user)
-  
+
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,12 +33,7 @@ const Navbar = () => {
             >
               Biodatas
             </NavLink>
-            <NavLink
-              to="/contact"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Contact Us
-            </NavLink>
+           
             {user ? (
               <>
                <div className="flex gap-3 items-center">
@@ -115,18 +109,7 @@ const Navbar = () => {
           >
             Biodatas
           </NavLink>
-          <NavLink
-            to="/about"
-            className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
-          >
-            About Us
-          </NavLink>
-          <NavLink
-            to="/contact"
-            className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
-          >
-            Contact Us
-          </NavLink>
+          
           {user ? (
             <>
               <NavLink
