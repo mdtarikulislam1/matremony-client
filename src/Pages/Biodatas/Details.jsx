@@ -43,7 +43,7 @@ export default function Details() {
   {/* Profile Image */}
   <div className="col-span-1">
     <img data-aos="fade-right"
-      className="w-full h-full rounded-xl object-cover object-top shadow-lg"
+      className="w-full h-full rounded-xl object-contain shadow-lg"
       src={datas?.profileImage}
       alt={datas?.name}
     />

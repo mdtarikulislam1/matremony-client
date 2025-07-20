@@ -97,6 +97,21 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden px-2 pt-2 pb-3 space-y-1 z-50">
+          {user ? (
+               <div className="flex gap-3 items-center">
+                <div className="flex gap-2 items-center">
+                   <img className="w-12 h-12 rounded-full" src={user?.photoURL} alt={user?.displayName} />
+                  <p className="font-semibold text-xl">{user?.displayName}</p>
+                </div>
+               </div>
+            ) : (
+              <NavLink
+                to="/signin"
+                className="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+              >
+                Login
+              </NavLink>
+            )}
           <NavLink
             to="/"
             className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
