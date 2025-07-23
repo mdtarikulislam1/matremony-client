@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 import { AuthContext } from '../Context/AuthContext';
 import { motion } from "framer-motion";
 import { FaSignOutAlt } from 'react-icons/fa'
+import { FaUsersViewfinder } from "react-icons/fa6";
+import { CiEdit } from "react-icons/ci";
 
 export default function DashBoardLayouts() {
  const [role, loading] = useRole(); 
@@ -47,7 +49,7 @@ export default function DashBoardLayouts() {
               });
             });
         };
-
+console.log(role)
 
   return (
     <div className='flex flex-col gap-4 md:flex-row justify-center max-w-11/12 mx-auto min-h-screen mt-7'>
@@ -57,22 +59,22 @@ export default function DashBoardLayouts() {
       <div>
     
        <NavLink to='adminDashBoard'   className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Admin Dashboard <MdManageAccounts size={30}/></NavLink>
 
        <NavLink to='manageUsers'  className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Manage Users  <BiSolidDashboard size={30}/></NavLink>
 
        <NavLink to='approvedPremium'  className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Approved Premium <TbPremiumRights size={30}/></NavLink>
 
        <NavLink to='approvedContactRequest'  className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Approved Contact<GrContact size={30}/></NavLink>
     
@@ -80,19 +82,24 @@ export default function DashBoardLayouts() {
       : 
       <div>
   <NavLink to='favorites'   className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
-    }`}>Favorites <div className='text-red-600'><MdFavorite size={30}/></div></NavLink>
+    }`}>Favorites <div className='text-red-600'><MdFavorite size={22}/></div></NavLink>
+
+  <NavLink to='editBiodata'   className={({ isActive }) =>
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
+      isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
+    }`}>Edit Biodata <CiEdit size={22}/></NavLink>
 
        <NavLink to='contactRequest'  className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
-    }`}>Contact Request <GrContact size={30}/></NavLink>
+    }`}>Contact Request <GrContact size={22}/></NavLink>
 
        <NavLink to='viewBioData'  className={({ isActive }) =>
-    `flex items-center gap-2 text-nowrap inline-block${
+    `flex items-center gap-2 mb-3 whitespace-nowrap${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
-    }`}>View BioData<TbPremiumRights size={30}/></NavLink>
+    }`}>View BioData<FaUsersViewfinder size={22}/></NavLink>
       </div>
 
      }

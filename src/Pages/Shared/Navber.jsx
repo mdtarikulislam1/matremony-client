@@ -3,7 +3,7 @@ import { AuthContext } from "../../Context/AuthContext";
 import { NavLink } from "react-router";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, } = use(AuthContext);
+  const { user } = use(AuthContext);
 
   return (
     <nav className="bg-white shadow-md">

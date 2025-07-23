@@ -84,7 +84,7 @@ const BiodataForm = () => {
   const races = ["Fair", "Medium", "Dark"];
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-3xl shadow-xl mt-10">
+    <div className="bg-white rounded-3xl shadow-xl my-10 p-6 max-w-5xl">
       <h2 className="text-3xl font-bold text-center mb-6 text-indigo-600">
         Create Your Biodata
       </h2>

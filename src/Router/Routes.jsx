@@ -33,10 +33,7 @@ export const router = createBrowserRouter([
         path: "signin",
         element: <SignIn />,
       },
-      {
-        path: "biodataform",
-        element: <BiodataForm />,
-      },
+     
       {
         path: "matremony/allData",
         element: <Biodatas />,
@@ -84,6 +81,10 @@ export const router = createBrowserRouter([
           {
             path:"favorites",
             element:<FavouritesBiodata/>
+          },
+          {
+          path: "editBiodata",
+          element: <BiodataForm />,
           },
         ],
       },

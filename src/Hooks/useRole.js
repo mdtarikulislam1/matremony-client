@@ -17,7 +17,7 @@ export default function useRole() {
           );
           setRole(data?.role);
         } catch (error) {
-          console.error("রোল আনতে সমস্যা হয়েছে:", error);
+          console.error("fhhff", error);
           setRole(null); // fallback
         } finally {
           setLoading(false);
@@ -31,5 +31,5 @@ export default function useRole() {
     fetchUserRole();
   }, [user?.email, axiosSecure]);
 
-  return [role, loading];
+  return [role, loading,];
 }
