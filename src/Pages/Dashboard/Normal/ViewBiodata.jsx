@@ -34,7 +34,7 @@ export default function ViewBiodata() {
       {/* Profile Image */}
       <div className="col-span-1">
         <img
-          data-aos="fade-right"
+          data-aos="fade-down"
           className="w-full rounded-xl object-contain max-h-96"
           src={datas?.profileImage}
           alt={datas?.name}
@@ -43,7 +43,7 @@ export default function ViewBiodata() {
 
       {/* Biodata Details */}
       <div
-        data-aos="fade-left"
+        data-aos="fade-up"
         className="col-span-2 bg-white rounded-xl shadow-lg border border-yellow-400 p-6 flex flex-col gap-3"
       >
         <h2 className="text-3xl font-bold text-yellow-500 mb-4">

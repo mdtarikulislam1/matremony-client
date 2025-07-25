@@ -52,8 +52,8 @@ export default function DashBoardLayouts() {
 console.log(role)
 
   return (
-    <div className='flex flex-col gap-4 md:flex-row justify-center max-w-11/12 mx-auto min-h-screen mt-7'>
-    <div className='md:flex-1 bg-gray-100 my-3 p-5 rounded-lg max-h-64'>
+    <div className='flex flex-col gap-4 md:flex-row justify-center max-w-11/12 mx-auto min-h-screen my-8'>
+    <div className='md:flex-1 h-[calc(100vh)] border-r border-gray-400'>
      {
       role === 'admin'? 
       <div>
