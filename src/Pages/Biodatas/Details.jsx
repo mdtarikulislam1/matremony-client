@@ -11,6 +11,20 @@ export default function Details() {
   const axiosSecure = getSecureAxios();
   const { user } = use(AuthContext);
   const [stutas, setStutas] = useState([]);
+  const [disabled, setDisabled] = useState([]);
+  const [gender,setGender]=useState([])
+  // const disable = disabled([0])
+
+  useEffect(() => {
+  if (datas?.biodataType) {
+    axiosSecure
+      .get(`/biodataByGender?gender=${datas.biodataType}`) // query param ঠিক থাকছে
+      .then(res => setGender(res.data)) // setGender e result pathano
+      .catch(err => console.log(err));
+  }
+}, []); // dependency দিলে dynamic way e fetch korbe
+
+
 
   useEffect(() => {
     axiosSecure
@@ -25,12 +39,17 @@ export default function Details() {
   }, []);
 
   useEffect(() => {
+    axiosSecure.get(`/favourites/${user?.email}`).then((res) => {
+      setDisabled(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
     axiosSecure.get(`/stutas/${user?.email}`).then((res) => {
       setStutas(res.data);
       setLoading(false);
     });
   }, []);
-  console.log(stutas);
 
   if (loading) {
     return (
@@ -63,14 +82,14 @@ export default function Details() {
           });
         } else {
           Swal.fire({
-           icon: "success",
+            icon: "success",
             title: "Allready Added",
             toast: true,
             position: "top-end",
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
-          })
+          });
         }
       })
       .catch((err) => {
@@ -78,6 +97,8 @@ export default function Details() {
         alert("ফেভারিট করতে সমস্যা হয়েছে।");
       });
   };
+
+   console.log(gender)
 
   return (
     <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
@@ -194,6 +215,7 @@ export default function Details() {
 
         <div className="mt-6 flex justify-end">
           <button
+            disabled={stutas?.userEmail === datas?.user}
             onClick={handleAddFavorite}
             className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-5 rounded-lg shadow-md transition-all"
           >

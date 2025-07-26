@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import getSecureAxios from "../../Shared/secureAxios";
 import { AuthContext } from "../../../Context/AuthContext";
+import Swal from "sweetalert2";
 
 export default function FavouritesBiodata() {
   const axiosSecure = getSecureAxios();
@@ -20,6 +21,33 @@ export default function FavouritesBiodata() {
     }
   }, []);
 
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to remove this biodata from favourites?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e3342f",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .delete(`/favourites/delete/${id}`)
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              setData((prevData) => prevData.filter((item) => item._id !== id));
+              Swal.fire("Deleted!", "Biodata has been removed.", "success");
+            }
+          })
+          .catch((err) => {
+            console.error("ডিলিট করতে সমস্যা:", err);
+            Swal.fire("Error", "ডিলিট করতে সমস্যা হয়েছে", "error");
+          });
+      }
+    });
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4 text-center">
@@ -37,6 +65,7 @@ export default function FavouritesBiodata() {
                 <th className="border px-4 py-2 text-left">Name</th>
                 <th className="border px-4 py-2 text-left">Division</th>
                 <th className="border px-4 py-2 text-left">Occupation</th>
+                <th className="border px-4 py-2 text-left">Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -46,6 +75,14 @@ export default function FavouritesBiodata() {
                   <td className="border px-4 py-2">{item.name}</td>
                   <td className="border px-4 py-2">{item.permanentDivision}</td>
                   <td className="border px-4 py-2">{item.Occupation}</td>
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="btn bg-red-500 text-white px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

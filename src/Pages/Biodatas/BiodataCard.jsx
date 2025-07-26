@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 
 export default function BiodataCard({service}) {
-    const {_id,profileImage,name,biodataType,occupation,yourAge}=service
+    const {_id,profileImage,name,biodataType,occupation,yourAge,addid}=service
   return (
     <div data-aos="fade-up" className="flex flex-col bg-white shadow-2xl rounded-lg mx-3">
   <div className="h-80 overflow-hidden rounded-t-lg">
@@ -14,6 +14,7 @@ export default function BiodataCard({service}) {
   </div>
   <div className="flex justify-between p-4">
    <div>
+    <p className="text-xl">BioDataId: {addid}</p>
     <p className="text-xl">Name: {name}</p>
     <p className="text-lg">Gender: {biodataType}</p>
     <p className="text-lg">Hoby: {occupation}</p>
