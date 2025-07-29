@@ -1,6 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import getSecureAxios from "../../Shared/secureAxios";
 import { AuthContext } from "../../../Context/AuthContext";
+import Swal from "sweetalert2";
 
 export default function ViewBiodata() {
   const axiosSecure = getSecureAxios();
@@ -9,7 +10,25 @@ export default function ViewBiodata() {
   const [datas, setThearData] = useState({});
   const [stutas, setStatus] = useState([]);
 
-  const handlePremium = () => {};
+  const handlePremium = () => {
+     axiosSecure
+    .post(`/request-premium/${datas?.user}`, {
+      name: datas?.name,
+      email: datas?.user,
+      id: datas?.addid,
+    })
+    .then((res) => {
+      if (res.data.success) {
+        Swal.fire("Success", "Premium request sent!", "success");
+      } else {
+        Swal.fire("Notice", res.data.message || "Already requested!", "info");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      Swal.fire("Error", "Something went wrong!", "error");
+    });
+  };
 
   useEffect(() => {
     axiosSecure.get(`/stutas/${user?.email}`).then((res) => {
@@ -38,7 +57,7 @@ export default function ViewBiodata() {
       </div>
     );
   }
-  // console.log(datas);
+  console.log(datas);
   return (
     <>
       {datas?.message === "No biodata found" ? (

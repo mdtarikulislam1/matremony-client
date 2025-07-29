@@ -11,7 +11,7 @@ export default function FavouritesBiodata() {
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get(`/favourites/${user.email}`)
+        .get(`/favourites/${user?.email}`)
         .then((res) => {
           setData(res.data);
         })

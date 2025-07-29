@@ -28,7 +28,7 @@ const PurchaseModal = ({ id, email, isOpen, onClose }) => {
 
         <div>
           <Elements stripe={stripePromise}>
-            <PaymentForm id={id} email={email} />
+            <PaymentForm id={id} email={email}  onClose={onClose}/>
           </Elements>
         </div>
       </div>

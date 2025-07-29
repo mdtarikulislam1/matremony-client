@@ -5,6 +5,7 @@ import { AuthContext } from "../../Context/AuthContext";
 import Swal from "sweetalert2";
 import BiodataCard from "./BiodataCard";
 import PurchaseModal from "../Payment/PurchaseModal";
+import useRole from "../../Hooks/useRole";
 
 export default function Details() {
   const { id } = useParams();
@@ -13,9 +14,10 @@ export default function Details() {
   const axiosSecure = getSecureAxios();
   const { user } = use(AuthContext);
   const [stutas, setStutas] = useState([]);
-  const [disabled, setDisabled] = useState([]);
+  // const [disabled, setDisabled] = useState([]);
   const [gender, setGender] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [role] = useRole();
 
   // const disable = disabled([0])
 
@@ -34,17 +36,13 @@ export default function Details() {
       .then((response) => {
         setDatas(response.data);
         setLoading(false);
+        console.log(response);
       })
       .catch((error) => {
         setLoading(false);
       });
   }, [id]);
 
-  useEffect(() => {
-    axiosSecure.get(`/favourites/${user?.email}`).then((res) => {
-      setDisabled(res.data);
-    });
-  }, []);
 
   useEffect(() => {
     axiosSecure.get(`/stutas/${user?.email}`).then((res) => {
@@ -100,7 +98,7 @@ export default function Details() {
       });
   };
 
-  // console.log(datas);
+  console.log(datas);
 
   return (
     <div className="min-h-[calc(100vh-400px)]">
@@ -230,13 +228,17 @@ export default function Details() {
           </div>
 
           <div className="mt-6 flex justify-end">
-            <button
-              disabled={stutas?.userEmail === datas?.user}
-              onClick={handleAddFavorite}
-              className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-5 rounded-lg shadow-md transition-all"
-            >
-              Add Favorite
-            </button>
+            {role === "admin" ? (
+              ""
+            ) : (
+              <button
+                // disabled={disabled ? "cursor-not-allow" : ""}
+                onClick={handleAddFavorite}
+                className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-5 rounded-lg shadow-md transition-all"
+              >
+                Add Favorite
+              </button>
+            )}
           </div>
         </div>
       </div>

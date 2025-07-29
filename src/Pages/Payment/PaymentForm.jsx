@@ -1,13 +1,15 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
 import getSecureAxios from "../Shared/secureAxios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
-export default function PaymentForm({id,email}) {
+export default function PaymentForm({ id, email, onClose }) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState("");
-  const axiosSecure =getSecureAxios()
-
+  const axiosSecure = getSecureAxios();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) {
@@ -31,42 +33,57 @@ export default function PaymentForm({id,email}) {
       setError("");
       console.log("[PaymentMethod]", paymentMethod);
     }
-    const res = await axiosSecure.post('/create-payment-intent',{
-        id
+    const res = await axiosSecure.post("/create-payment-intent", {
+      parcelId: id,
+      email: email,
     })
+   if(res?.data?.success){
+const clientSecret = res.data.clientSecret;
 
-    const clientSecret=res.data.clientSecret
-
-   const result = await stripe.confirmCardPayment(clientSecret,{
-    payment_method:{
-        card:elements.getElement(CardElement),
-        billing_details:{
-            name:'torikul',
+    const result = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: "torikul",
         },
-    },
-   })
-   if(result.error){
-    console.log(result.error.message)
-   }else{
-    if(result.paymentIntent.status==='succeeded'){
+      },
+    });
+    if (result.error) {
+      console.log(result.error.message);
+    } else {
+      if (result.paymentIntent.status === "succeeded") {
         // console.log('payment succed')
-        console.log(result)
-    const amount = 500
-         const paymentDoc = {
-          parcelId:id,
-          email:email,
-          amount:amount,
-          paymentMethod:result?.paymentIntent?.payment_method,
-          transactionId:result?.paymentIntent?.id
+        console.log(result);
+        const amount = 500;
+        const paymentDoc = {
+          parcelId: id,
+          email: email,
+          amount: amount,
+          paymentMethod: result?.paymentIntent?.payment_method,
+          transactionId: result?.paymentIntent?.id,
         };
-       const paymentRes = await axiosSecure.post('/payments',paymentDoc)
-        if(paymentRes.data.insertedId){
-          console.log('payment succesfully')
+        const paymentRes = await axiosSecure.post("/payments", paymentDoc);
+        if (paymentRes.data.insertedId) {
+          Swal.fire({
+            title: "Success!",
+            text: "You have successfully Payment.",
+            icon: "success",
+            confirmButtonColor: "#4f46e5",
+          });
+          
+          onClose();
+          // navigate('/dashboard/customer/approvedContactRequest')
         }
+      }
     }
+   }else{
+    alert(res?.data?.message)
+    onClose()
    }
+    
+    
 
- console.log(res)
+    console.log(res);
   };
 
   return (
