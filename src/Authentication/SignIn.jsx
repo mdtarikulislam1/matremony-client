@@ -1,20 +1,29 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router"; // <-- FIXED
 import Swal from "sweetalert2";
 import { saveUserDb } from "../Pages/Shared/role";
 import { AuthContext } from "../Context/AuthContext";
+import useRole from "../Hooks/useRole";
 
 export default function SignIn() {
   const { signInWithGoogle, SignInUser } = use(AuthContext); // <-- FIXED
   const navigate = useNavigate();
+  const [role] = useRole(); 
   const [loading, setLoading] = useState(false);
 
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(()=>{
+    if(role){
+      navigate(`/dashboard/${role}`)
+    }
+  },[role])
 
   const onSubmit = async (data) => {
    setLoading(true)
@@ -35,7 +44,7 @@ export default function SignIn() {
         icon: "success",
         confirmButtonColor: "#4f46e5",
       }).then(() => {
-        navigate("/dashboard");
+       
       });
     } catch (error) {
       Swal.fire({
@@ -65,9 +74,7 @@ export default function SignIn() {
         text: "Signed in with Google.",
         icon: "success",
         confirmButtonColor: "#4f46e5",
-      }).then(() => {
-        navigate("/dashboard");
-      });
+      })
     } catch (error) {
       console.error("Google SignIn error:", error);
       Swal.fire({

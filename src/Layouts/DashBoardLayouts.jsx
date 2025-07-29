@@ -58,22 +58,22 @@ console.log(role)
       role === 'admin'? 
       <div>
     
-       <NavLink to='adminDashBoard'   className={({ isActive }) =>
+       <NavLink to={`/dashboard/${role}/adminDashBoard`}   className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Admin Dashboard <MdManageAccounts size={30}/></NavLink>
 
-       <NavLink to='manageUsers'  className={({ isActive }) =>
+       <NavLink to={`/dashboard/${role}/manageUsers`}  className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Manage Users  <BiSolidDashboard size={30}/></NavLink>
 
-       <NavLink to='approvedPremium'  className={({ isActive }) =>
+       <NavLink to={`/dashboard/${role}/approvedPremium`}  className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Approved Premium <TbPremiumRights size={30}/></NavLink>
 
-       <NavLink to='approvedContactRequest'  className={({ isActive }) =>
+       <NavLink to={`/dashboard/${role}/approvedContactRequest`}  className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Approved Contact<GrContact size={30}/></NavLink>
@@ -81,22 +81,22 @@ console.log(role)
       </div> 
       : 
       <div>
-  <NavLink to='favorites'   className={({ isActive }) =>
+  <NavLink to={`/dashboard/${role}/favorites`}   className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Favorites <div className='text-red-600'><MdFavorite size={22}/></div></NavLink>
 
-  <NavLink to='editBiodata'   className={({ isActive }) =>
+  <NavLink to={`/dashboard/${role}/editBioData`}   className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Edit Biodata <CiEdit size={22}/></NavLink>
 
-       <NavLink to='contactRequest'  className={({ isActive }) =>
+       <NavLink to={`/dashboard/${role}/contactRequest`} className={({ isActive }) =>
     `flex items-center gap-2 mb-3 text-nowrap inline-block${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>Contact Request <GrContact size={22}/></NavLink>
 
-       <NavLink to='viewBioData'  className={({ isActive }) =>
+       <NavLink to={`/dashboard/${role}/viewbioData`} className={({ isActive }) =>
     `flex items-center gap-2 mb-3 whitespace-nowrap${
       isActive ? "text-xl font-bold text-blue-600" : "text-lg font-medium text-gray-600"
     }`}>View BioData<FaUsersViewfinder size={22}/></NavLink>

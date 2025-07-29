@@ -1,10 +1,11 @@
 import { use, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { NavLink } from "react-router";
+import useRole from "../../Hooks/useRole";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = use(AuthContext);
-
+const [role] = useRole(); 
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,7 +39,7 @@ const Navbar = () => {
               <>
                <div className="flex gap-3 items-center">
                  <NavLink
-                  to="/dashboard"
+                  to={role=='customer'?`/dashboard/${role}/viewbioData`:`/dashboard/${role}/adminDashBoard`}
                   className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Dashboard
@@ -128,7 +129,7 @@ const Navbar = () => {
           {user ? (
             <>
               <NavLink
-                to="/dashboard"
+                to={`dashboard/${role}`}
                 className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
               >
                 Dashboard

@@ -19,11 +19,11 @@ import ViewBiodata from "../Pages/Dashboard/Normal/ViewBiodata";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />, 
+    element: <RootLayout />,
     children: [
       {
         index: true,
-        element: <Home />, 
+        element: <Home />,
       },
       {
         path: "signup",
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
         path: "signin",
         element: <SignIn />,
       },
-     
+
       {
         path: "matremony/allData",
         element: <Biodatas />,
@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "dashboard",
+        path: "dashboard/admin",
         element: (
           <PrivateRoute>
             <DashBoardLayouts />
@@ -55,36 +55,46 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "adminDashBoard", 
-            element: <AdminDashBoard />
+            path: 'adminDashBoard',
+            element: <AdminDashBoard />,
           },
           {
-            path:"manageUsers",
-            element:<ManageUsers/>
+            path: "manageUsers",
+            element: <ManageUsers />,
           },
           {
-            path:"approvedContactRequest",
-            element:<ApprovedContactRequest/>
+            path: "approvedContactRequest",
+            element: <ApprovedContactRequest />,
           },
           {
-            path:"approvedPremium",
-            element:<ApprovedPremium/>
+            path: "approvedPremium",
+            element: <ApprovedPremium />,
+          },
+        ],
+      },
+      {
+        path: "dashboard/customer",
+        element: (
+          <PrivateRoute>
+            <DashBoardLayouts />
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            path:'viewbioData',
+            element: <ViewBiodata />,
           },
           {
-            path:"viewBioData",
-            element:<ViewBiodata/>
+            path: "contactRequest",
+            element: <MyContactRequest />,
           },
           {
-            path:"contactRequest",
-            element:<MyContactRequest/>
+            path: "favorites",
+            element: <FavouritesBiodata />,
           },
           {
-            path:"favorites",
-            element:<FavouritesBiodata/>
-          },
-          {
-          path: "editBiodata",
-          element: <BiodataForm />,
+            path: "editBioData",
+            element: <BiodataForm />,
           },
         ],
       },
