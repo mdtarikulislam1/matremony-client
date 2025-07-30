@@ -10,7 +10,7 @@ export default function Biodatas() {
   const [currentPage, setCurrentPage] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [maxPageButtons, setMaxPageButtons] = useState(5);
-  const itemsPerPage = 3;
+  const itemsPerPage = 6;
   // const maxPageButtons = 5;
   const axiosSecure = getSecureAxios();
 
