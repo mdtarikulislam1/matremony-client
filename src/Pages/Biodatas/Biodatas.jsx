@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import getSecureAxios from '../Shared/secureAxios';
-import BiodataCard from './BiodataCard';
+import React, { useEffect, useState } from "react";
+import getSecureAxios from "../Shared/secureAxios";
+import BiodataCard from "./BiodataCard";
 
 export default function Biodatas() {
   const [services, setServices] = useState([]);
@@ -8,24 +8,45 @@ export default function Biodatas() {
   const [loading, setLoading] = useState(true);
   const [pageLoading, setPageLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const itemsPerPage = 6;
+  const [startIndex, setStartIndex] = useState(0);
+  const [maxPageButtons, setMaxPageButtons] = useState(5);
+  const itemsPerPage = 3;
+  // const maxPageButtons = 5;
   const axiosSecure = getSecureAxios();
 
-  // Filter states
   const [ageRange, setAgeRange] = useState([18, 60]);
-  const [biodataType, setBiodataType] = useState('');
-  const [division, setDivision] = useState('');
+  const [biodataType, setBiodataType] = useState("");
+  const [division, setDivision] = useState("");
 
   useEffect(() => {
-    axiosSecure.get('/matremony/allData')
-      .then(response => {
+    const updateMaxButtons = () => {
+      const width = window.innerWidth;
+      if (width < 500) {
+        setMaxPageButtons(3);
+      } else if (width < 768) {
+        setMaxPageButtons(4);
+      } else if (width < 1024) {
+        setMaxPageButtons(5);
+      } else {
+        setMaxPageButtons(7);
+      }
+    };
+
+    updateMaxButtons(); // initial set
+    window.addEventListener("resize", updateMaxButtons); // listen to resize
+
+    return () => window.removeEventListener("resize", updateMaxButtons);
+  }, []);
+
+  useEffect(() => {
+    axiosSecure
+      .get("/matremony/allData")
+      .then((response) => {
         setServices(response.data);
         setFiltered(response.data);
         setLoading(false);
       })
-      .catch(error => {
-        console.error(error);
+      .catch((error) => {
         setLoading(false);
       });
   }, []);
@@ -33,24 +54,30 @@ export default function Biodatas() {
   const handleFilter = () => {
     let result = services;
 
-    // Age Filter
-    result = result.filter(item =>
-      parseInt(item.yourAge) >= ageRange[0] && parseInt(item.yourAge) <= ageRange[1]
+    result = result.filter(
+      (item) =>
+        parseInt(item.yourAge) >= ageRange[0] &&
+        parseInt(item.yourAge) <= ageRange[1]
     );
 
-    // Biodata Type Filter
     if (biodataType) {
-      result = result.filter(item => item.biodataType === biodataType);
+      result = result.filter((item) => item.biodataType === biodataType);
     }
 
-    // Division Filter
     if (division) {
-      result = result.filter(item => item.permanentDivision === division);
+      result = result.filter((item) => item.permanentDivision === division);
     }
 
     setFiltered(result);
     setCurrentPage(1);
+    setStartIndex(0);
   };
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (page) => {
     setPageLoading(true);
@@ -60,10 +87,22 @@ export default function Biodatas() {
     }, 300);
   };
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
+  const handleNextSet = () => {
+    if (startIndex + maxPageButtons < totalPages) {
+      setStartIndex(startIndex + maxPageButtons);
+    }
+  };
+
+  const handlePrevSet = () => {
+    if (startIndex - maxPageButtons >= 0) {
+      setStartIndex(startIndex - maxPageButtons);
+    }
+  };
+
+  const visiblePages = Array.from(
+    { length: Math.min(maxPageButtons, totalPages - startIndex) },
+    (_, i) => startIndex + i + 1
+  );
 
   if (loading) {
     return (
@@ -75,14 +114,14 @@ export default function Biodatas() {
 
   return (
     <div className="my-10 lg:max-w-11/12 xl:w-full mx-auto px-4">
-      <h2 className="py-4 text-2xl font-semibold text-center">Choose Your Partner</h2>
+      <h2 className="py-4 text-2xl font-semibold text-center">
+        Choose Your Partner
+      </h2>
 
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left: Filters */}
         <div className="lg:w-1/4 w-full bg-white border rounded p-4 shadow-sm">
           <h3 className="text-lg font-semibold mb-4">Filter</h3>
 
-          {/* Age Range */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Age Range</label>
             <input
@@ -96,9 +135,10 @@ export default function Biodatas() {
             <p className="text-xs text-gray-600">18 to {ageRange[1]} years</p>
           </div>
 
-          {/* Biodata Type */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Biodata Type</label>
+            <label className="block text-sm font-medium mb-1">
+              Biodata Type
+            </label>
             <select
               value={biodataType}
               onChange={(e) => setBiodataType(e.target.value)}
@@ -110,7 +150,6 @@ export default function Biodatas() {
             </select>
           </div>
 
-          {/* Division */}
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Division</label>
             <select
@@ -129,12 +168,14 @@ export default function Biodatas() {
             </select>
           </div>
 
-          <button onClick={handleFilter} className="btn btn-primary w-full mt-2">
+          <button
+            onClick={handleFilter}
+            className="btn btn-primary w-full mt-2"
+          >
             Apply Filters
           </button>
         </div>
 
-        {/* Right: Biodata Cards */}
         <div className="lg:w-3/4 w-full">
           {pageLoading ? (
             <div className="flex justify-center py-10">
@@ -143,44 +184,47 @@ export default function Biodatas() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
               {currentItems.length > 0 ? (
-                currentItems.map(service => (
+                currentItems.map((service) => (
                   <BiodataCard key={service._id} service={service} />
                 ))
               ) : (
-                <p className="col-span-3 text-center text-gray-600">No biodata found.</p>
+                <p className="col-span-3 text-center text-gray-600">
+                  No biodata found.
+                </p>
               )}
             </div>
           )}
 
-          {/* Pagination */}
-          <div className="flex flex-wrap justify-center items-center gap-2 mt-8">
+          {/* Updated Pagination */}
+          <div className="flex justify-center items-center gap-2 mt-8 overflow-x-auto">
             <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2 border rounded disabled:opacity-40"
+              onClick={handlePrevSet}
+              disabled={startIndex === 0}
+              className="px-3 py-1 text-sm border rounded disabled:opacity-50 text-nowrap"
             >
-              ← Prev
+              Prev
             </button>
 
-            {Array.from({ length: totalPages }, (_, index) => (
+            {visiblePages.map((page) => (
               <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 border rounded transition-all duration-300 ${currentPage === index + 1
-                  ? 'bg-blue-600 text-white shadow'
-                  : 'hover:bg-blue-100'
-                  }`}
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-1 text-sm border rounded transition ${
+                  currentPage === page
+                    ? "bg-blue-600 text-white shadow"
+                    : "hover:bg-blue-100"
+                }`}
               >
-                {index + 1}
+                {page}
               </button>
             ))}
 
             <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 border rounded disabled:opacity-40"
+              onClick={handleNextSet}
+              disabled={startIndex + maxPageButtons >= totalPages}
+              className="px-3 py-1 text-sm border rounded disabled:opacity-50 text-nowrap"
             >
-              Next →
+              Next
             </button>
           </div>
         </div>

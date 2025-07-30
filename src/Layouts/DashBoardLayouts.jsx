@@ -45,7 +45,6 @@ export default function DashBoardLayouts() {
               });
             });
         };
-console.log(role)
 
   return (
     <div className='flex flex-col gap-4 md:flex-row justify-center max-w-11/12 mx-auto min-h-screen my-8'>

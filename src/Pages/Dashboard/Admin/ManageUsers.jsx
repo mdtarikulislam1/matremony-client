@@ -15,9 +15,7 @@ export default function ManageUsers() {
       .then((res) => {
         setAllUsers(res?.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+     
   }, []);
 
   // Toggle Admin Role
@@ -49,7 +47,6 @@ export default function ManageUsers() {
         });
       }
     } catch (error) {
-      console.error(error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -87,7 +84,6 @@ export default function ManageUsers() {
         });
       }
     } catch (error) {
-      console.error(error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -95,7 +91,6 @@ export default function ManageUsers() {
       });
     }
   };
-  console.log(allUsers);
   return (
     <div className="overflow-x-auto my-8 text-nowrap">
       <table className="min-w-full border border-gray-300 rounded-lg">

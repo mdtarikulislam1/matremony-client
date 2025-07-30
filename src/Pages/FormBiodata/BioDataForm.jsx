@@ -22,21 +22,17 @@ const BiodataForm = () => {
   useEffect(() => {
    try{
      axiosSecure.get(`/thearData/${user?.email}`).then((res) => {
-      // console.log(res)
       setBioData(res.data);
       setLoading(false);
     });
    }
    catch(error){
-    console.log(error)
    }
   }, [user]);
   const onSubmit = (data) => {
-    // console.log("Form Data:", data);
     axiosSecure
       .put(`/addBioData?email=${user?.email}`, {
         ...data,
-        // user: user?.email,
       })
       .then((response) => {
        
@@ -126,12 +122,10 @@ const BiodataForm = () => {
 
     });
   }, [bioData]);
- console.log(bioData)
   if (loading) {
     return <div>...</div>;
     
   }
-  console.log(user.email)
   return (
     <div className="bg-white rounded-3xl shadow-xl my-10 p-6 max-w-5xl">
       <h2 className="text-3xl font-bold text-center mb-6 text-indigo-600">

@@ -26,7 +26,6 @@ export default function Details() {
       axiosSecure
         .get(`/biodataByGender?gender=${datas.biodataType}`)
         .then((res) => setGender(res.data))
-        .catch((err) => console.log(err));
     }
   }, [datas]);
 
@@ -36,13 +35,11 @@ export default function Details() {
       .then((response) => {
         setDatas(response.data);
         setLoading(false);
-        console.log(response);
       })
       .catch((error) => {
         setLoading(false);
       });
   }, [id]);
-
 
   useEffect(() => {
     axiosSecure.get(`/stutas/${user?.email}`).then((res) => {
@@ -92,13 +89,9 @@ export default function Details() {
           });
         }
       })
-      .catch((err) => {
-        console.error("ফেভারিটে সমস্যা:", err);
-        alert("ফেভারিট করতে সমস্যা হয়েছে।");
-      });
+     
   };
 
-  console.log(datas);
 
   return (
     <div className="min-h-[calc(100vh-400px)]">
@@ -219,6 +212,8 @@ export default function Details() {
                   <PurchaseModal
                     id={datas?.addid}
                     email={user?.email}
+                    mobile={datas?.mobile}
+                    buyuser={datas?.user}
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                   />

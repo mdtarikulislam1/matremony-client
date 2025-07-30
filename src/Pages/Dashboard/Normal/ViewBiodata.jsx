@@ -25,7 +25,6 @@ export default function ViewBiodata() {
       }
     })
     .catch((err) => {
-      console.error(err);
       Swal.fire("Error", "Something went wrong!", "error");
     });
   };
@@ -45,7 +44,6 @@ export default function ViewBiodata() {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   }, []);
@@ -57,7 +55,6 @@ export default function ViewBiodata() {
       </div>
     );
   }
-  console.log(datas);
   return (
     <>
       {datas?.message === "No biodata found" ? (

@@ -17,7 +17,6 @@ export default function useRole() {
           );
           setRole(data?.role);
         } catch (error) {
-          console.error("fhhff", error);
           setRole(null); // fallback
         } finally {
           setLoading(false);

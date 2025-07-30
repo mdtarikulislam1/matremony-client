@@ -13,9 +13,7 @@ export default function ApprovedPremium() {
       .then((res) => {
         setRequests(res.data);
       })
-      .catch((err) => {
-        console.error("Error fetching requests:", err);
-      });
+     
   };
   useEffect(() => {
     handlegetPremeumRequest()
@@ -27,7 +25,6 @@ export default function ApprovedPremium() {
 
   const handlePremeum = (email) => {
     axiosSecure.put(`/makePremeum/update/${email}`).then((res) => {
-      console.log(res);
       handlegetPremeumRequest()
     });
   };

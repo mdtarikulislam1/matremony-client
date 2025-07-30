@@ -4,7 +4,7 @@ import getSecureAxios from "../Shared/secureAxios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 
-export default function PaymentForm({ id, email, onClose }) {
+export default function PaymentForm({ id, email, mobile, buyuser, onClose }) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState("");
@@ -21,69 +21,67 @@ export default function PaymentForm({ id, email, onClose }) {
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error} = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
 
     if (error) {
-      console.log("[error]", error);
       setError(error?.message);
     } else {
       setError("");
-      console.log("[PaymentMethod]", paymentMethod);
     }
     const res = await axiosSecure.post("/create-payment-intent", {
       parcelId: id,
       email: email,
-    })
-   if(res?.data?.success){
-const clientSecret = res.data.clientSecret;
-
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: "torikul",
-        },
-      },
     });
-    if (result.error) {
-      console.log(result.error.message);
-    } else {
-      if (result.paymentIntent.status === "succeeded") {
-        // console.log('payment succed')
-        console.log(result);
-        const amount = 500;
-        const paymentDoc = {
-          parcelId: id,
-          email: email,
-          amount: amount,
-          paymentMethod: result?.paymentIntent?.payment_method,
-          transactionId: result?.paymentIntent?.id,
-        };
-        const paymentRes = await axiosSecure.post("/payments", paymentDoc);
-        if (paymentRes.data.insertedId) {
-          Swal.fire({
-            title: "Success!",
-            text: "You have successfully Payment.",
-            icon: "success",
-            confirmButtonColor: "#4f46e5",
-          });
-          
-          onClose();
-          // navigate('/dashboard/customer/approvedContactRequest')
+
+    if (res?.data?.success === false) {
+      alert(res?.data?.message);
+      onClose()
+    }
+
+    if (res?.data) {
+      const clientSecret = res.data.clientSecret;
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: "torikul",
+          },
+        },
+      });
+      {
+        if (result.paymentIntent.status === "succeeded") {
+          const amount = 500;
+          const paymentDoc = {
+            parcelId: id,
+            email: email,
+            mobile: mobile,
+            buyuser: buyuser,
+            amount: amount,
+            paymentMethod: result?.paymentIntent?.payment_method,
+            transactionId: result?.paymentIntent?.id,
+          };
+          const paymentRes = await axiosSecure.post("/payments", paymentDoc);
+          if (paymentRes.data.insertedId) {
+            Swal.fire({
+              title: "Success!",
+              text: "You have successfully Payment.",
+              icon: "success",
+              confirmButtonColor: "#4f46e5",
+            });
+
+            onClose();
+          }
         }
       }
+    } else {
+      alert(res?.data?.message);
+      onClose();
     }
-   }else{
-    alert(res?.data?.message)
-    onClose()
-   }
-    
-    
 
-    console.log(res);
   };
 
   return (

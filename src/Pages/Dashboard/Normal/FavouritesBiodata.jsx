@@ -15,9 +15,7 @@ export default function FavouritesBiodata() {
         .then((res) => {
           setData(res.data);
         })
-        .catch((err) => {
-          console.log("ফেভারিট লোডে সমস্যা:", err);
-        });
+       
     }
   }, []);
 
@@ -41,7 +39,6 @@ export default function FavouritesBiodata() {
             }
           })
           .catch((err) => {
-            console.error("ডিলিট করতে সমস্যা:", err);
             Swal.fire("Error", "ডিলিট করতে সমস্যা হয়েছে", "error");
           });
       }

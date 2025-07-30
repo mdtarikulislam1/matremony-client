@@ -13,13 +13,11 @@ export default function PremiumMembers() {
     axiosSecure
       .get(`/premium-members?order=${sortOrder}`)
       .then((res) => setMembers(res.data))
-      .catch((err) => console.error("Error loading premium members:", err));
   }, [sortOrder]);
 
   const handleViewProfile = (id) => {
     navigate(`/details/${id}`);
   };
-  console.log(members);
   return (
     <section className="max-w-6xl mx-auto p-4 my-8">
       <h2 className="text-3xl font-bold text-center">Premium Members</h2>

@@ -25,9 +25,7 @@ export default function AdminDashBoard() {
         setCounts(response?.data);
         setLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+     
   }, [axiosSecure]);
 
   if (loading) {

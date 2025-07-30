@@ -25,7 +25,6 @@ export default function SignUp() {
       };
 
       const res = await saveUserDb(userData); 
-      console.log("Saved User:", res);
 
       Swal.fire({
         title: "Success!",
@@ -34,7 +33,6 @@ export default function SignUp() {
         confirmButtonColor: "#4f46e5",
       })
     } catch (error) {
-      console.error("Google SignIn error:", error);
       Swal.fire({
         title: "Error!",
         text: error.message,
@@ -62,7 +60,6 @@ export default function SignUp() {
         displayName: data.name,
         photoURL: data.image,
       });
-      console.log("Profile updated");
 
       const userData = {
         name: data.name,
@@ -70,7 +67,6 @@ export default function SignUp() {
         email: data.email,
       };
       const res = await saveUserDb(userData); 
-      console.log("Saved User:", res);
 
       Swal.fire({
         title: "Success!",
@@ -79,7 +75,6 @@ export default function SignUp() {
         confirmButtonColor: "#4f46e5",
       })
     } catch (error) {
-      console.error("Signup error:", error);
       Swal.fire({
         title: "Error!",
         text: error.message,

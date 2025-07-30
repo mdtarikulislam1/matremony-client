@@ -30,7 +30,6 @@ export default function SignIn() {
   
     try {
       const result = await SignInUser(data.email, data.password);
-      console.log(result);
 
       const userData = {
         name: result?.user?.displayName,
@@ -76,7 +75,6 @@ export default function SignIn() {
         confirmButtonColor: "#4f46e5",
       })
     } catch (error) {
-      console.error("Google SignIn error:", error);
       Swal.fire({
         title: "Error!",
         text: error.message,

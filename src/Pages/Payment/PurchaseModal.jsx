@@ -3,7 +3,7 @@ import React from "react";
 import { AiOutlineClose } from "react-icons/ai"; // Icon import
 import { loadStripe } from "@stripe/stripe-js";
 import PaymentForm from "./PaymentForm";
-const PurchaseModal = ({ id, email, isOpen, onClose }) => {
+const PurchaseModal = ({ id, email,mobile,buyuser, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_KEY);
@@ -28,7 +28,7 @@ const PurchaseModal = ({ id, email, isOpen, onClose }) => {
 
         <div>
           <Elements stripe={stripePromise}>
-            <PaymentForm id={id} email={email}  onClose={onClose}/>
+            <PaymentForm id={id} email={email} mobile={mobile} buyuser={buyuser} onClose={onClose}/>
           </Elements>
         </div>
       </div>
