@@ -20,7 +20,7 @@ export default function MyContactRequest() {
           <tr>
             <th className="p-3 border-b">Name</th>
             <th className="p-3 border-b">Biodata ID</th>
-            <th className="p-3 border-b">Status</th>
+            <th className="p-3 border-b">Person</th>
             <th className="p-3 border-b">Mobile No</th>
             <th className="p-3 border-b">Email</th>
             <th className="p-3 border-b">Action</th>

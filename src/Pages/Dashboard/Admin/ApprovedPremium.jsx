@@ -1,30 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import getSecureAxios from '../../Shared/secureAxios';
-import useRole from '../../../Hooks/useRole';
+import React, { useEffect, useState } from "react";
+import getSecureAxios from "../../Shared/secureAxios";
+import useRole from "../../../Hooks/useRole";
 
 export default function ApprovedPremium() {
   const [requests, setRequests] = useState([]);
-  const {role}=useRole
-  const axiosSecure=getSecureAxios()
+  const { role } = useRole;
+  const axiosSecure = getSecureAxios();
 
-  useEffect(() => {
-    axiosSecure.get("/request-premium") 
-      .then(res => {
+  const handlegetPremeumRequest = () => {
+    axiosSecure
+      .get("/request-premium")
+      .then((res) => {
         setRequests(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error fetching requests:", err);
       });
+  };
+  useEffect(() => {
+    handlegetPremeumRequest()
   }, []);
 
-  
+  // useEffect(()=>{
+  //   axiosSecure.get()
+  // },[])
 
-  const handlePremeum =(email)=>{
-    axiosSecure.put(`/makePremeum/update/${email}`)
-    .then(res=>{
-      console.log(res)
-    })
-  }
+  const handlePremeum = (email) => {
+    axiosSecure.put(`/makePremeum/update/${email}`).then((res) => {
+      console.log(res);
+      handlegetPremeumRequest()
+    });
+  };
 
   return (
     <div className="p-4">
@@ -35,7 +41,7 @@ export default function ApprovedPremium() {
             <tr className="bg-gray-100">
               <th className="border p-2">Name</th>
               <th className="border p-2">Biodata ID</th>
-              <th className="border p-2">Status</th>
+              <th className="border p-2">Person</th>
               <th className="border p-2">Email</th>
               <th className="border p-2">Action</th>
             </tr>
@@ -46,17 +52,15 @@ export default function ApprovedPremium() {
                 <td className="border p-2">{req.name || "N/A"}</td>
                 <td className="border p-2">{req.id || "N/A"}</td>
                 <td className="border p-2">
-                  {req.pending ? "Pending" : "Approved"}
+                  {req.pending ? "Pending..." : "Approved"}
                 </td>
-                <td className="border p-2">
-                   {req?.email}
-                </td>
+                <td className="border p-2">{req?.email}</td>
                 <td className="border p-2">
                   <button
                     className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
-                    onClick={()=>handlePremeum(req?.email)}
+                    onClick={() => handlePremeum(req?.email)}
                   >
-                   {req.pending ? "Make Premeum" : "AlReady Premeum"}
+                    {req.pending ? "Make Premeum" : "AlReady Premeum"}
                   </button>
                 </td>
               </tr>
@@ -76,4 +80,3 @@ export default function ApprovedPremium() {
 }
 
 // Dummy delete handler
-

@@ -20,11 +20,7 @@ export default function DashBoardLayouts() {
 
  if (loading) {
     // যখন রোল লোড হচ্ছে তখন লোডিং দেখাও
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <span className="loading loading-dots loading-xl"></span>
-      </div>
-    );
+    return 
   }
 
      const handleLogout = () => {

@@ -197,7 +197,7 @@ export default function Details() {
                 </span>{" "}
                 {datas?.expectedPartnerWeight}
               </p>
-              {stutas?.status === "premium" || stutas?.role === "admin" ? (
+              {stutas?.person === "premium" || stutas?.role === "admin" ? (
                 <div>
                   <p>
                     <span className="font-semibold text-gray-700">Mobile:</span>{" "}

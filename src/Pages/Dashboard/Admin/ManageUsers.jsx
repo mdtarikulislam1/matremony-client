@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import getSecureAxios from "../../Shared/secureAxios";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../Context/AuthContext";
 
 export default function ManageUsers() {
   const axiosSecure = getSecureAxios();
+  const {user}=use(AuthContext)
   const [allUsers, setAllUsers] = useState([]);
 
   // Fetch all users
@@ -20,7 +22,7 @@ export default function ManageUsers() {
 
   // Toggle Admin Role
   const handleToggleAdmin = async (user) => {
-    const newRole = user.role === "admin" ? "user" : "admin";
+    const newRole = user.role === "admin" ? "customer" : "admin";
 
     try {
       const res = await axiosSecure.put(`/users/role/${user._id}`, {
@@ -58,22 +60,22 @@ export default function ManageUsers() {
 
   // Toggle Premium Status
   const handleTogglePremium = async (user) => {
-    const newStatus = user.status === "premium" ? "normal" : "premium";
+    const newPerson = user.person === "premium" ? "normal" : "premium";
 
     try {
       const res = await axiosSecure.put(`/users/premium/${user._id}`, {
-        status: newStatus,
+        person: newPerson,
       });
       if (res.data.success) {
         // Update state locally
         const updatedUsers = allUsers.map((u) =>
-          u._id === user._id ? { ...u, status: newStatus } : u
+          u._id === user._id ? { ...u, person: newPerson } : u
         );
         setAllUsers(updatedUsers);
 
         Swal.fire({
           icon: "success",
-          title: `User is now ${newStatus}! 🎉`,
+          title: `User is now ${newPerson}! `,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -114,44 +116,44 @@ export default function ManageUsers() {
           </tr>
         </thead>
         <tbody>
-          {allUsers.map((user) => (
+          {allUsers.map((users) => (
             <tr
               className="border-t border-gray-200 hover:bg-gray-50"
-              key={user?._id}
+              key={users?._id}
             >
-              <td className="px-4 py-2 text-sm text-gray-800">{user?.name}</td>
-              <td className="px-4 py-2 text-sm text-gray-800">{user?.email}</td>
+              <td className="px-4 py-2 text-sm text-gray-800">{users?.name}</td>
+              <td className="px-4 py-2 text-sm text-gray-800">{users?.email}</td>
 
               {/* Make Admin Button */}
               <td className="px-4 py-2 text-center">
                 <button
-                  onClick={() => handleToggleAdmin(user)}
-                  disabled={user?.email === "torikul@gmail.com"} // 👉 এইখানে চেক
+                  onClick={() => handleToggleAdmin(users)}
+                  disabled={users?.email === "torikul@gmail.com"||user.email === users.email} // 👉 এইখানে চেক
                   className={`px-3 py-1 text-xs rounded text-white ${
-                    user?.role === "admin"
+                    users?.role === "admin"
                       ? "bg-red-600 hover:bg-red-700"
                       : "bg-blue-600 hover:bg-blue-700"
                   } transition ${
-                    user?.email === "torikul@gmail.com"
+                    users?.email === "torikul@gmail.com"||user.email === users.email
                       ? "opacity-50 cursor-not-allowed" // 👉 disabled হলে স্টাইল চেঞ্জ
                       : ""
                   }`}
                 >
-                  {user?.role === "admin" ? "Cancel Admin" : "Make Admin"}
+                  {users?.role === "admin" ? "Cancel Admin" : "Make Admin"}
                 </button>
               </td>
 
               {/* Make Premium Button */}
               <td className="px-4 py-2 text-center">
                 <button
-                  onClick={() => handleTogglePremium(user)}
+                  onClick={() => handleTogglePremium(users)}
                   className={`px-3 py-1 text-xs rounded text-white ${
-                    user?.status === "premium"
+                    users?.person === "premium"
                       ? "bg-red-600 hover:bg-red-700"
                       : "bg-green-600 hover:bg-green-700"
                   } transition`}
                 >
-                  {user?.status === "premium"
+                  {users?.person === "premium"
                     ? "Cancel Premium"
                     : "Make Premium"}
                 </button>

@@ -8,7 +8,7 @@ export default function ViewBiodata() {
   const { user } = use(AuthContext);
   const [loading, setLoading] = useState(true);
   const [datas, setThearData] = useState({});
-  const [stutas, setStatus] = useState([]);
+  const [person, setPerson] = useState([]);
 
   const handlePremium = () => {
      axiosSecure
@@ -32,7 +32,7 @@ export default function ViewBiodata() {
 
   useEffect(() => {
     axiosSecure.get(`/stutas/${user?.email}`).then((res) => {
-      setStatus(res.data);
+      setPerson(res.data);
       setLoading(false);
     });
   }, []);
@@ -170,15 +170,15 @@ export default function ViewBiodata() {
                 </p>
                 <button
                   onClick={handlePremium}
-                  disabled={stutas?.status === "premium"}
+                  disabled={person?.person === "premium"}
                   className={`px-4 py-2 rounded-md font-semibold text-white transition
     ${
-      stutas?.status === "premium"
+      person?.person === "premium"
         ? "bg-gray-400 cursor-not-allowed"
         : "bg-green-600 hover:bg-green-700"
     }`}
                 >
-                  {stutas?.status === "premium"
+                  {person?.person === "premium"
                     ? "Already Premium"
                     : "Make Premium"}
                 </button>
