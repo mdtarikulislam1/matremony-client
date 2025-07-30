@@ -51,7 +51,13 @@ export default function ContactTable({ data, setData }) {
       <td className="p-3">
         <button
           onClick={handleDelete}
-          className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+          disabled={data?.pending === true}
+          className={`px-2 py-1 text-white text-xs rounded transition 
+      ${
+        data?.pending === true
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-red-500 hover:bg-red-600 cursor-pointer"
+      }`}
         >
           Delete
         </button>

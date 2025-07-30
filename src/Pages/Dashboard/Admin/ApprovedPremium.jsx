@@ -32,7 +32,7 @@ export default function ApprovedPremium() {
   return (
     <div className="p-4">
       <h2 className="text-xl font-semibold mb-4">Premium Requests</h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto text-nowrap">
         <table className="min-w-full border border-gray-300 text-sm">
           <thead>
             <tr className="bg-gray-100">
