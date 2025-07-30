@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default function getSecureAxios(baseURL = 'http://localhost:3000') {
+export default function getSecureAxios(baseURL = 'https://matremony-server.vercel.app') {
   return axios.create({
     baseURL,
     withCredentials: true,
