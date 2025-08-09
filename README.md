@@ -1,12 +1,26 @@
-# React + Vite
+# Project Name — Short Tagline
+> Short description: একটি দুই-লাইন বর্ণনা যা প্রজেক্টের উদ্দেশ্য বলে দেয়.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🔗 **Live Demo:**https://zap-shift-d29d6.web.app/ 
+📁 **Repo client:** https://github.com/mdtarikulislam1/matremony-client
+📁 **Repo server:** https://github.com/mdtarikulislam1/matremony-client
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧩 Overview
+This is a responsive Matrimony web application featuring three user roles: Admin, User, and Premium. It includes a purchase option, biodata creation, and partner selection features to provide a seamless matchmaking experience.
 
-## Expanding the ESLint configuration
+## 🖼️ Screenshot
+![Homepage preview](./src/assets/Screenshot%202025-08-09%20095127.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Technologies
+- React (or HTML/CSS/JS)
+- Tailwind CSS 
+- Firebase / Node.js / Express 
+- MongoDB 
+
+## ⭐ Core Features
+- Feature 1 — e.g., Responsive UI,  filters
+- Feature 2 — e.g., Auth with Firebase
+- Feature 3 — e.g., CRUD on products/reviews
+
