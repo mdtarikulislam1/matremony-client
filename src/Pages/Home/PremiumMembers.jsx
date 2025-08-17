@@ -12,7 +12,7 @@ export default function PremiumMembers() {
   useEffect(() => {
     axiosSecure
       .get(`/premium-members?order=${sortOrder}`)
-      .then((res) => setMembers(res.data))
+      .then((res) => setMembers(res.data));
   }, [sortOrder]);
 
   const handleViewProfile = (id) => {
@@ -34,8 +34,9 @@ export default function PremiumMembers() {
       <div className="grid md:grid-cols-3 gap-6">
         {members.map((user) => (
           <div
+            data-aos="fade-up"
             key={user._id}
-            className="border border-gray-400 rounded-xl p-4 shadow hover:shadow-lg transition"
+            className="border border-gray-200 rounded-xl p-4 shadow hover:shadow-lg transition "
           >
             <img
               src={user.profileImage}
@@ -46,7 +47,7 @@ export default function PremiumMembers() {
               <strong>Biodata ID:</strong> {user.addid}
             </p>
             <p>
-              <strong>Type:</strong> {user.biodataType}
+              <strong>Gender:</strong> {user.biodataType}
             </p>
             <p>
               <strong>Division:</strong> {user.permanentDivision}

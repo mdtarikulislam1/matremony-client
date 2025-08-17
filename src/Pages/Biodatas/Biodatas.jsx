@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import getSecureAxios from "../Shared/secureAxios";
 import BiodataCard from "./BiodataCard";
+import { BsFilterLeft } from "react-icons/bs";
 
 export default function Biodatas() {
   const [services, setServices] = useState([]);
@@ -10,7 +11,8 @@ export default function Biodatas() {
   const [currentPage, setCurrentPage] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [maxPageButtons, setMaxPageButtons] = useState(5);
-  const itemsPerPage = 6;
+  const [showFilter, setShowFilter] = useState(false);
+  const itemsPerPage = 12;
   // const maxPageButtons = 5;
   const axiosSecure = getSecureAxios();
 
@@ -111,78 +113,110 @@ export default function Biodatas() {
       </div>
     );
   }
-
+console.log(services)
   return (
     <div className="my-10 lg:max-w-11/12 xl:w-full mx-auto px-4">
       <h2 className="py-4 text-2xl font-semibold text-center">
         Choose Your Partner
       </h2>
-
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="lg:w-1/4 w-full bg-white border rounded p-4 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Filter</h3>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Age Range</label>
-            <input
-              type="range"
-              min={18}
-              max={60}
-              value={ageRange[1]}
-              onChange={(e) => setAgeRange([18, parseInt(e.target.value)])}
-              className="range"
-            />
-            <p className="text-xs text-gray-600">18 to {ageRange[1]} years</p>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
-              Biodata Type
-            </label>
-            <select
-              value={biodataType}
-              onChange={(e) => setBiodataType(e.target.value)}
-              className="select select-bordered w-full"
-            >
-              <option value="">All</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Division</label>
-            <select
-              value={division}
-              onChange={(e) => setDivision(e.target.value)}
-              className="select select-bordered w-full"
-            >
-              <option value="">All</option>
-              <option value="Dhaka">Dhaka</option>
-              <option value="Chattogram">Chattogram</option>
-              <option value="Rangpur">Rangpur</option>
-              <option value="Barisal">Barisal</option>
-              <option value="Khulna">Khulna</option>
-              <option value="Mymensingh">Mymensingh</option>
-              <option value="Sylhet">Sylhet</option>
-            </select>
-          </div>
-
+      <div className="flex justify-end items-center">
+        <div className="p-4 relative">
+          {/* Toggle Button */}
           <button
-            onClick={handleFilter}
-            className="btn btn-primary w-full mt-2"
+            onClick={() => setShowFilter(!showFilter)}
+            className=" btn rounded mb-4"
           >
-            Apply Filters
+            {showFilter ? (
+              <div className="flex gap-2 items-center">
+                <p>Hide</p>
+                <p className="text-xl">x</p>
+              </div>
+            ) : (
+              <div className="flex gap-2 items-center">
+                <p>Show Filter</p> <BsFilterLeft size={28} />
+              </div>
+            )}
           </button>
-        </div>
 
-        <div className="lg:w-3/4 w-full">
+          {/* Floating Filter Box */}
+          {showFilter && (
+            <div
+              className="absolute top-14 right-0 max-w-[400px] min-w-[300px] max-h-[550px] 
+                      bg-white border border-gray-200 rounded p-4 shadow-lg z-50 my-4"
+            >
+              <h3 className="text-lg font-semibold mb-4">Filter</h3>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">
+                  Age Range
+                </label>
+                <input
+                  type="range"
+                  min={18}
+                  max={60}
+                  value={ageRange[1]}
+                  onChange={(e) => setAgeRange([18, parseInt(e.target.value)])}
+                  className="range text-gray-700 hover:text-gray-600"
+                />
+                <p className="text-xs text-gray-600">
+                  18 to {ageRange[1]} years
+                </p>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">
+                  Biodata Type
+                </label>
+                <select
+                  value={biodataType}
+                  onChange={(e) => setBiodataType(e.target.value)}
+                  className="select select-bordered w-full"
+                >
+                  <option value="">All</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">
+                  Division
+                </label>
+                <select
+                  value={division}
+                  onChange={(e) => setDivision(e.target.value)}
+                  className="select select-bordered w-full"
+                >
+                  <option value="">All</option>
+                  <option value="Dhaka">Dhaka</option>
+                  <option value="Chattogram">Chattogram</option>
+                  <option value="Rangpur">Rangpur</option>
+                  <option value="Barisal">Barisal</option>
+                  <option value="Khulna">Khulna</option>
+                  <option value="Mymensingh">Mymensingh</option>
+                  <option value="Sylhet">Sylhet</option>
+                </select>
+              </div>
+
+              <button
+                onClick={handleFilter}
+                className="bg-blue-500 hover:bg-blue-600 text-white btn w-full mt-2"
+              >
+                Apply Filters
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <div>
           {pageLoading ? (
             <div className="flex justify-center py-10">
               <span className="loading loading-dots loading-lg"></span>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
               {currentItems.length > 0 ? (
                 currentItems.map((service) => (
                   <BiodataCard key={service._id} service={service} />

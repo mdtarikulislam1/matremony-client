@@ -28,7 +28,7 @@ const HowItWorks = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-white via-purple-50 to-indigo-100">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4 animate-fadeIn">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4 animate-fadeIn">
           💖 How It Works
         </h2>
         <p className="text-gray-700 mb-10 animate-fadeIn delay-200">
@@ -42,7 +42,7 @@ const HowItWorks = () => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transform hover:-translate-y-2 transition duration-100 animate-fadeIn delay-100"
+              className="bg-white rounded-2xl shadow hover:shadow-lg transition p-4"
             >
               <div className="flex justify-center mb-4">{step.icon}</div>
               <h3 className="text-xl font-bold text-gray-800 mb-2">

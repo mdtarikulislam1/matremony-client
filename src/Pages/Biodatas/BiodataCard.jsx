@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 export default function BiodataCard({service}) {
     const {_id,profileImage,name,biodataType,occupation,yourAge,addid}=service
   return (
-    <div data-aos="fade-up" className="flex flex-col bg-white shadow-2xl rounded-lg mx-3">
+    <div data-aos="fade-up" className="flex flex-col bg-white shadow-2xl rounded-lg">
   <div className="h-80 overflow-hidden rounded-t-lg">
     <img
       className="w-full h-full object-cover object-top"
@@ -22,7 +22,7 @@ export default function BiodataCard({service}) {
    </div>
    
      
-      <button className="bg-yellow-400 py-2 px-4 rounded-lg font-bold h-10">
+      <button className=" bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded cursor-pointer h-10">
         <Link to={`/details/${_id}`}>Details</Link> 
       </button>
    

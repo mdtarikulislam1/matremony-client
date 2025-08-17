@@ -5,17 +5,14 @@ import { AuthContext } from "../../../Context/AuthContext";
 
 export default function ManageUsers() {
   const axiosSecure = getSecureAxios();
-  const {user}=use(AuthContext)
+  const { user } = use(AuthContext);
   const [allUsers, setAllUsers] = useState([]);
 
   // Fetch all users
   useEffect(() => {
-    axiosSecure
-      .get("/users/allData")
-      .then((res) => {
-        setAllUsers(res?.data);
-      })
-     
+    axiosSecure.get("/users/allData").then((res) => {
+      setAllUsers(res?.data);
+    });
   }, []);
 
   // Toggle Admin Role
@@ -92,7 +89,8 @@ export default function ManageUsers() {
     }
   };
   return (
-    <div className="overflow-x-auto my-8 text-nowrap">
+    <div className="my-8 text-nowrap overflow-x-auto">
+      {/* 👉 এখানে overflow-x-auto বসালাম */}
       <table className="min-w-full border border-gray-300 rounded-lg">
         <thead className="bg-gray-100">
           <tr>
@@ -117,20 +115,26 @@ export default function ManageUsers() {
               key={users?._id}
             >
               <td className="px-4 py-2 text-sm text-gray-800">{users?.name}</td>
-              <td className="px-4 py-2 text-sm text-gray-800">{users?.email}</td>
+              <td className="px-4 py-2 text-sm text-gray-800">
+                {users?.email}
+              </td>
 
               {/* Make Admin Button */}
               <td className="px-4 py-2 text-center">
                 <button
                   onClick={() => handleToggleAdmin(users)}
-                  disabled={users?.email === "torikul@gmail.com"||user.email === users.email} // 👉 এইখানে চেক
+                  disabled={
+                    users?.email === "torikul@gmail.com" ||
+                    user.email === users.email
+                  }
                   className={`px-3 py-1 text-xs rounded text-white ${
                     users?.role === "admin"
                       ? "bg-red-600 hover:bg-red-700"
                       : "bg-blue-600 hover:bg-blue-700"
                   } transition ${
-                    users?.email === "torikul@gmail.com"||user.email === users.email
-                      ? "opacity-50 cursor-not-allowed" // 👉 disabled হলে স্টাইল চেঞ্জ
+                    users?.email === "torikul@gmail.com" ||
+                    user.email === users.email
+                      ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
                 >
