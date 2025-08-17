@@ -46,14 +46,14 @@ const Navbar = () => {
                   >
                     Dashboard
                   </NavLink>
-                  <div className="flex gap-2 items-center">
-                    <p className="font-semibold text-xl">{user?.displayName}</p>
-                    <img
-                      className="w-12 h-12 rounded-full"
-                      src={user?.photoURL}
-                      alt={user?.displayName}
-                    />
-                  </div>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <p className="font-semibold text-xl">{user?.displayName}</p>
+                  <img
+                    className="w-12 h-12 rounded-full"
+                    src={user?.photoURL}
+                    alt={user?.displayName}
+                  />
                 </div>
               </>
             ) : (
@@ -137,12 +137,36 @@ const Navbar = () => {
 
           {user ? (
             <>
-              <NavLink
-                to={`dashboard/${role}`}
-                className="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
-              >
-                Dashboard
-              </NavLink>
+              <details>
+                <summary className="cursor-pointer text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium">
+                  Dashboard
+                </summary>
+                <ul className="ml-4 mt-2 space-y-2">
+                  {role === "admin" ? (
+                   <>
+                    <li>
+                     <a href={`/dashboard/${role}/adminDashBoard`}>Admin Dashboard</a>
+                    </li>
+                    <li>
+                     <a href={`/dashboard/${role}/manageUsers`}>Manage Usrs</a>
+                    </li>
+                    <li>
+                     <a href={`/dashboard/${role}/approvedPremium`}>Approved Premeum</a>
+                    </li>
+                    <li>
+                     <a href={`/dashboard/${role}/approvedContactRequest`}>Approved Contact</a>
+                    </li>
+                   </>
+                  ) : (
+                   <>
+                   <li><a href={`/dashboard/${role}/favorites`}>Favorite</a></li>
+                   <li><a href={`/dashboard/${role}/editBioData`}>Edit Biodata</a></li>
+                   <li><a href={`/dashboard/${role}/contactRequest`}>Contact Request</a></li>
+                   <li><a href={`/dashboard/${role}/viewbioData`}>Your Data</a></li>
+                   </>
+                  )}
+                </ul>
+              </details>
             </>
           ) : (
             <NavLink
